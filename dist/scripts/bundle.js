@@ -50201,6 +50201,22 @@ module.exports = NotFoundPage;
 var React = require('react');
 
 var About = React.createClass({displayName: "About",
+    statics: {
+        willTransitionTo: function(transition, params, query, callback) {
+            // if (!confirm('Are you sure you want to go to this page?')) {
+            //     transition.abort();
+            // }
+            // else {
+            //     callback();
+            // }
+        },
+        willTransitionFrom: function(transition, component) {
+            // if (!confirm('Are you sure you want to leave this page?')) {
+            //     transition.abort();
+            // }
+        }
+    },
+
     render: function() {
         return (
             React.createElement("div", null, 
@@ -50333,8 +50349,8 @@ var Header = React.createClass({displayName: "Header",
                 ), 
                     React.createElement("ul", {className: "nav navbar-nav"}, 
                         React.createElement("li", null, React.createElement(Link, {to: "app"}, "Home")), 
-                        React.createElement("li", null, React.createElement(Link, {to: "authors"}, "About")), 
-                        React.createElement("li", null, React.createElement(Link, {to: "about"}, "Authors"))
+                        React.createElement("li", null, React.createElement(Link, {to: "authors"}, "Authors")), 
+                        React.createElement("li", null, React.createElement(Link, {to: "about"}, "About"))
                     )
                 )
             )  
@@ -50370,7 +50386,7 @@ var React = require('react');
 var Router = require('react-router');
 var routes = require('./routes.js');
 
-Router.run(routes, function(Handler) {
+Router.run(routes, Router.HistoryLocation, function(Handler) {
     React.render(React.createElement(Handler, null), document.getElementById('app'));
 })
 
@@ -50382,13 +50398,17 @@ var Router = require('react-router');
 var DefaultRoute = Router.DefaultRoute;
 var Route = Router.Route;
 var NotFoundRoute = Router.NotFoundRoute;
+var Redirect = Router.Redirect;
 
 var routes = (
     React.createElement(Route, {name: "app", path: "/", handler: require('./components/app')}, 
         React.createElement(NotFoundRoute, {handler: require('./components/404')}), 
         React.createElement(DefaultRoute, {handler: require('./components/homePage')}), 
         React.createElement(Route, {name: "about", handler: require('./components/about/aboutPage')}), 
-        React.createElement(Route, {name: "authors", handler: require('./components/authors/authorsPage')})
+        React.createElement(Route, {name: "authors", handler: require('./components/authors/authorsPage')}), 
+
+        React.createElement(Redirect, {from: "about-us", to: "about"}), 
+        React.createElement(Redirect, {from: "about/*", to: "about"})
     )
 );
 
