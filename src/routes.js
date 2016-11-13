@@ -13,6 +13,7 @@ var routes = (
         <DefaultRoute handler={require('./components/homePage')} />
         <Route name="about" handler={require('./components/about/aboutPage')} />
         <Route name="authors" handler={require('./components/authors/authorsPage')} />
+        <Route name="manage" handler={require('./components/authors/manageAuthorsPage')} />
 
         <Redirect from="about-us" to="about" />
         <Redirect from="about/*" to="about" />
